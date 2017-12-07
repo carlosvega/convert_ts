@@ -1,7 +1,10 @@
 #!/usr/bin/python
-import time, datetime, sys, argparse, logging
+import time, datetime, sys, argparse, logging, os
 from argparse import RawTextHelpFormatter
 import fileinput
+
+#os.environ['TZ'] = 'GMT' #oddly faster with GMT :-O
+
 date_format = '%d/%m/%Y:%H.%M.%S'
 
 def parse_args():
@@ -90,18 +93,19 @@ for line in fileinput.input(args.input):
         ctr+=1
         line = line.rstrip().split(args.separator)
         # Convert the columns in args.ts_column to timestamp
-        for column in args.ts_column:
-                try:
-                        line[column] = convert_ts(line[column], args.ts_format)
-                        if column == args.ts_column[args.main_ts] and not timestamp_in_range(line[column], args.start, args.end):
-                                next_line = True
-                        elif args.ms:
-                                line[column] = line[column]*1000
-                except Exception as e:
-                        logging.warn('Error converting column {} ({}) from line number {} : {}'.format(column, line[column], ctr, o_line))
-                        next_line = True
+        try:
+            for column in args.ts_column:
+                line[column] = convert_ts(line[column], args.ts_format)
+                if column == args.ts_column[args.main_ts] and not timestamp_in_range(line[column], args.start, args.end):
+                    next_line = True
+                elif args.ms:
+                    line[column] = line[column]*1000
+        except Exception as e:
+            logging.warn('Error converting column {} ({}) from line number {}. Ignoring entire line: {}'.format(column, line[column], ctr, o_line))
+            continue
+
         if next_line:
-                continue
+            continue
         # Remove the columns the user wants to exclude and convert to string
         line = [str(c) for i,c in enumerate(line) if column_is_included(i, args.include, args.exclude)]
         line = args.separator.join(line)
