@@ -6,6 +6,7 @@ Generic Timestamp Converter
 ## Considerations
 
 Python 2.7.10 and Pypy 5.9.0 were used. Pypy used the following the options: `--jit vec=1 --jit vec_all=1`
+
 Also used the following `os.environ['TZ'] = 'GMT'` which oddly boosts speed by a lot. For example, from 95.6Klines/s to 129Klines/s.
 
 ![Python 2.7.10 vs. Pypy 5.9.0 performance Comparison of the program](https://github.com/carlosvega/convert_ts/raw/master/bench.png)
