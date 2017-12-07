@@ -15,13 +15,19 @@ Generic Timestamp Converter
 * In order to set which columns to exclude or include, use options --exclude and --include.
 * For printing milliseconds since epoch instead of seconds, use --ms.
 
+## Limitations
+
+%z [is not available](https://bugs.python.org/issue17342
+) for function `datetime.strptime` in Python 2.x :-( 
+I plan to port this code to Python 3. I want to code it purely on Python in order to execute it with pypy.
+
 # Benchmarks
 
 ## Considerations
 
-Python 2.7.10 and Pypy 5.9.0 were used. Pypy used the following the options: `--jit vec=1 --jit vec_all=1`
-
-Also used the following `os.environ['TZ'] = 'GMT'` which oddly boosts speed by a lot. For example, from 95.6Klines/s to 129Klines/s.
+Python 2.7.10 and Pypy 5.9.0 were used. 
+Pypy used the following options: `--jit vec=1 --jit vec_all=1`.
+Also used the following trick which oddly boosts speed by a lot. `os.environ['TZ'] = 'GMT'` For example, from 95.6Klines/s to 129Klines/s.
 
 ![Python 2.7.10 vs. Pypy 5.9.0 performance Comparison of the program](https://github.com/carlosvega/convert_ts/raw/master/bench.png)
 
