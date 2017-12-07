@@ -1,6 +1,20 @@
 # convert_ts
 Generic Timestamp Converter
 
+## Usage
+
+* Without any additional option it converts the first column from format `%d/%m/%Y:%H.%M.%S` to seconds since epoch and prints the rest of columns as the original output.
+* Default input is stdin. Use -i to set a filename.
+* Default output is stdout. Use -o to set a filename.
+* If there are more timestamp columns, use -t to specify them.
+* If the timestamp can have multiple formats, use -f to specify a list of them between double quotes.
+* Keep in mind that these options affect the performance.
+* The default separator is the semicolon. For changing it, use the option -s.
+* If you want to exclude lines based on the timestamp, use --start and --end to specify the interval (in seconds since epoch).
+* If there are multiple timestamps columns, specify the main timestamp using the option --main_ts.
+* In order to set which columns to exclude or include, use options --exclude and --include.
+* For printing milliseconds since epoch instead of seconds, use --ms.
+
 # Benchmarks
 
 ## Considerations
