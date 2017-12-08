@@ -1,9 +1,10 @@
 #!/usr/bin/python
+from __future__ import print_function
 import time, datetime, sys, argparse, logging, os
 from argparse import RawTextHelpFormatter
 import fileinput
 
-#os.environ['TZ'] = 'GMT' #oddly faster with GMT :-O
+os.environ['TZ'] = 'GMT' #oddly faster with GMT :-O
 
 date_format = '%d/%m/%Y:%H.%M.%S'
 
@@ -109,5 +110,5 @@ for line in fileinput.input(args.input):
         # Remove the columns the user wants to exclude and convert to string
         line = [str(c) for i,c in enumerate(line) if column_is_included(i, args.include, args.exclude)]
         line = args.separator.join(line)
-        print >> args.output, line
+        print(line, file=args.output)
 
