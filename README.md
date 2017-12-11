@@ -31,14 +31,14 @@ Also used the following trick which oddly boosts speed by a lot. `os.environ['TZ
 
 ![Python 2.7.10 vs. Pypy 5.9.0 performance Comparison of the program](https://github.com/carlosvega/convert_ts/raw/master/bench.png)
 
+## Execution line of the benchmarks
+
+*Change python with pypy or python3 accordingly* 
+
 ### Only one timestamp
 
 ```Bash
 yes "2017/12/06 22:46:53;2017/12/06 22:46:53;2017/12/06 22:46:53;2017/12/06 22:46:53;2017/12/06 22:46:53" | python convert_ts.py -t 0 -f "%Y/%m/%d %H:%M:%S" | pv -l | head -2000000 > /dev/null 
-```
-
-```Bash
-yes "2017/12/06 22:46:53;2017/12/06 22:46:53;2017/12/06 22:46:53;2017/12/06 22:46:53;2017/12/06 22:46:53" | pypy --jit vec=1 --jit vec_all=1 convert_ts.py -t 0 -f "%Y/%m/%d %H:%M:%S" | pv -l | head -2000000 > /dev/null 
 ```
 
 ### 5 Timestamps
@@ -47,6 +47,3 @@ yes "2017/12/06 22:46:53;2017/12/06 22:46:53;2017/12/06 22:46:53;2017/12/06 22:4
 yes "2017/12/06 22:46:53;2017/12/06 22:46:53;2017/12/06 22:46:53;2017/12/06 22:46:53;2017/12/06 22:46:53" | python convert_ts.py -t 0 1 2 3 4 -f "%Y/%m/%d %H:%M:%S" | pv -l | head -2000000 > /dev/null 
 ```
 
-```Bash
-yes "2017/12/06 22:46:53;2017/12/06 22:46:53;2017/12/06 22:46:53;2017/12/06 22:46:53;2017/12/06 22:46:53" | pypy --jit vec=1 --jit vec_all=1 convert_ts.py -t 0 1 2 3 4 -f "%Y/%m/%d %H:%M:%S" | pv -l | head -2000000 > /dev/null 
-```
