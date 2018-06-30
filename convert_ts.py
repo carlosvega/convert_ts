@@ -1,8 +1,7 @@
 #!/usr/bin/python
 from __future__ import print_function
-import time, datetime, sys, argparse, logging, os
+import time, datetime, sys, argparse, logging, os, fileinput
 from argparse import RawTextHelpFormatter
-import fileinput
 
 os.environ['TZ'] = 'GMT' #oddly faster with GMT :-O
 
@@ -39,12 +38,15 @@ Execute with pypy for better performance
     parser.add_argument('-f', '--ts_format', dest='ts_format',  nargs='+',  default=date_format, required=False, help="Indicate the date format. Default: %s" % date_format.replace(r"%", r"%%"))
     parser.add_argument('--ms', dest='ms', default=False, action='store_true', help='Prints the converted timestamps in miliseconds, otherwise are printed in seconds.')
     parser.add_argument('--version', dest='version', default=False, action='store_true', help="Prints the program version.")
+    parser.add_argument('--where', dest='where', default='GMT', help="Where the timestamps come from? By default we assume GMT.")
 
     args = parser.parse_args()
 
     if args.version:
         logging.info('Timestamp Converter v0.1')
         sys.exit()
+
+    os.environ['TZ'] = args.where
 
     return args
 
@@ -83,6 +85,7 @@ def convert_ts_multi(string, date_formats):
                 continue
         raise ValueError
 
+# def convert_ts_single(string, date_format):
 
 convert_ts = convert_ts_multi if isinstance(args.ts_format, list) else convert_ts_single
 
